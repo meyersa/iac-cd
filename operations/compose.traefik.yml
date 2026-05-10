@@ -1,0 +1,65 @@
+services:
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: always
+    env_file: 
+      - ./compose.traefik.env
+    networks:
+      - traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8443:8443"
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8082:8082"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${TRAEFIK_STATIC_DIR}/letsencrypt:/letsencrypt
+      - ./config/dynamic_conf.yaml:/config/dynamic_conf.yaml
+    labels:
+      alloy.scrape: "true"
+      alloy.job: traefik
+      alloy.port: "8082"
+    command:
+      # Basic
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --accesslog=true
+      - --metrics.prometheus=true
+      - --metrics.prometheus.entrypoint=metrics
+
+      # Providers
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=traefik
+      - --providers.file.directory=/config
+      - --providers.file.watch=true
+
+      # Entrypoints
+      - --entrypoints.web.address=:80
+      - --entryPoints.web.forwardedHeaders.trustedIPs=127.0.0.1/32,172.16.0.0/12
+      - --entryPoints.web.http.redirections.entryPoint.to=websecure
+      - --entryPoints.web.http.redirections.entryPoint.scheme=https
+
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.reusePort=true
+      - --entryPoints.websecure.forwardedHeaders.trustedIPs=127.0.0.1/32,172.16.0.0/12
+      - --entrypoints.websecure.http.middlewares=web-ratelimit@file,secure-headers@file
+      - --entrypoints.websecure.http.tls.certResolver=letsencrypt
+
+      - --entrypoints.apisecure.address=:8443
+      - --entryPoints.apisecure.forwardedHeaders.trustedIPs=127.0.0.1/32,172.16.0.0/12
+      - --entrypoints.apisecure.http.middlewares=api-ratelimit@file,secure-headers@file
+      - --entrypoints.apisecure.http.tls.certResolver=letsencrypt
+
+      - --entrypoints.metrics.address=:8082
+
+      # LetsEncrypt
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      - "--certificatesresolvers.letsencrypt.acme.email=${TLS_EMAIL}"
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+
+networks:
+  traefik:

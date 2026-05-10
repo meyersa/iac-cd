@@ -1,0 +1,41 @@
+tls: 
+  options: 
+    default: 
+      sniStrict: true
+      
+http:
+  routers:
+    block-metrics:
+      rule: "Path(`/metrics`)"
+      entryPoints:
+        - web
+        - websecure
+        - apisecure
+      priority: 100
+      service: noop@internal
+
+  middlewares:
+    web-ratelimit:
+      rateLimit:
+        average: 100
+        burst: 50
+
+    api-ratelimit:
+      rateLimit:
+        average: 500
+        burst: 200
+
+    secure-headers:
+      headers:
+        customResponseHeaders:
+          server: Traefik
+        sslRedirect: true
+        stsSeconds: 315360000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        forceSTSHeader: true
+
+    noindex-header:
+      headers:
+        customResponseHeaders:
+          X-Robots-Tag: "noindex, nofollow"

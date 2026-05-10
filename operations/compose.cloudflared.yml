@@ -1,0 +1,15 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared
+    container_name: cloudflared
+    restart: unless-stopped
+    command:
+      - tunnel
+      - run
+    env_file:
+      - compose.cloudflare.env
+    networks:
+      - proxy
+
+networks:
+  proxy:
