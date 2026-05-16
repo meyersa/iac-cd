@@ -1,0 +1,3 @@
+name: storage
+include: 
+  - storage/compose.mongo.yml
