@@ -1,0 +1,26 @@
+services:
+  travel-frontend:
+      image: ghcr.io/meyersa/travel:latest
+      container_name: travel-frontend
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+        - storage_mongodb
+      env_file:
+        - ./compose.travel.env
+      labels: 
+        - "alloy.blackbox=travel.${FRONTEND_DOMAIN}"
+        - "traefik.enable=true"
+        - "traefik.http.routers.travel-frontend.rule=Host(`travel.${FRONTEND_DOMAIN}`)"
+        - "traefik.http.routers.travel-frontend.entrypoints=websecure"
+        - "traefik.http.services.travel-frontend.loadbalancer.server.port=3000"
+        - "traefik.http.routers.travel-frontend.middlewares=noindex-header@file"
+
+networks:
+  operations_traefik:
+    external: true
+  storage_mongodb: 
+    external: true
+  

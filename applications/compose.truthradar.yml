@@ -1,0 +1,44 @@
+services:
+  truthradar-frontend:
+      image: ghcr.io/meyersa/truthradar:latest
+      container_name: truthradar-frontend
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+        - storage_mongodb
+      env_file:
+        - ./compose.truthradar.env
+      labels: 
+        - "alloy.blackbox=truthradar.${FRONTEND_DOMAIN}"
+        - "traefik.enable=true"
+        - "traefik.http.routers.truthradar-frontend.rule=Host(`truthradar.${FRONTEND_DOMAIN}`)"
+        - "traefik.http.routers.truthradar-frontend.entrypoints=websecure"
+        - "traefik.http.services.truthradar-frontend.loadbalancer.server.port=5000"
+        - "traefik.http.routers.truthradar-frontend.middlewares=noindex-header@file"
+
+  truthradar-api:
+      image: ghcr.io/meyersa/truthradar-api:latest
+      container_name: truthradar-api
+      restart: unless-stopped
+      mem_limit: 2048m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+      env_file:
+        - ./compose.truthradar.env
+      labels: 
+        - "alloy.blackbox=truthradar.${FRONTEND_DOMAIN}:8443/predict"
+        - "traefik.enable=true"
+        - "traefik.http.routers.truthradar-api.rule=Host(`truthradar.${FRONTEND_DOMAIN}`) && PathPrefix(`/predict`)"
+        - "traefik.http.routers.truthradar-api.priority=100"
+        - "traefik.http.routers.truthradar-api.entrypoints=apisecure"
+        - "traefik.http.services.truthradar-api.loadbalancer.server.port=8000"
+        - "traefik.http.routers.truthradar-api.middlewares=noindex-header@file"
+
+networks:
+  operations_traefik:
+    external: true
+  storage_mongodb: 
+    external: true 

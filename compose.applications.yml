@@ -1,0 +1,7 @@
+name: applications
+include: 
+  - applications/compose.cloudsct.yml 
+  - applications/compose.meyersa.yml
+  - applications/compose.travel.yml
+  - applications/compose.truthradar.yml
+  - applications/compose.whoami.yml
