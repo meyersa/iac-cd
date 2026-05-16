@@ -7,7 +7,7 @@ services:
       - tunnel
       - run
     env_file:
-      - compose.cloudflare.env
+      - ./compose.cloudflare.env
     networks:
       - proxy
 
