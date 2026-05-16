@@ -1,0 +1,81 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    networks:
+      - operations_traefik
+      - loki
+      - mimir
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ${DATA_DIR}/grafana:/var/lib/grafana
+      - ${STATIC_DIR}/grafana/provisioning:/etc/grafana/provisioning
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.grafana.rule: Host(`dash.${BACKEND_DOMAIN}`)
+      traefik.http.routers.grafana.entrypoints: websecure
+      traefik.http.services.grafana.loadbalancer.server.port: "3000"
+      alloy.scrape: "true"
+      alloy.job: grafana
+      alloy.port: "3000"
+      alloy.blackbox: "dash.${BACKEND_DOMAIN}"
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    restart: unless-stopped
+    networks:
+      - loki
+      - operations_traefik
+    ports:
+      - "127.0.0.1:3100:3100"
+    command:
+      - -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ${DATA_DIR}/loki:/loki
+      - ./config/loki-config.yml:/etc/loki/local-config.yaml
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.loki.rule: Host(`loki.${BACKEND_DOMAIN}`)
+      traefik.http.routers.loki.entrypoints: apisecure
+      traefik.http.services.loki.loadbalancer.server.port: "3100"
+      traefik.http.middlewares.loki-auth.basicauth.users: ${LOKI_USER}:${LOKI_PASS}
+      traefik.http.middlewares.loki-auth.basicauth.removeheader: "true"
+      traefik.http.routers.loki.middlewares: loki-auth@docker
+      alloy.scrape: "true"
+      alloy.job: loki
+      alloy.port: "3100"
+
+  mimir:
+    image: grafana/mimir:latest
+    container_name: mimir
+    restart: unless-stopped
+    networks:
+      - mimir
+      - operations_traefik
+    ports:
+      - "127.0.0.1:9009:9009"
+    command:
+      - -config.file=/etc/mimir/local-config.yaml
+    volumes:
+      - ${DATA_DIR}/mimir:/mimir
+      - ./config/mimir-config.yml:/etc/mimir/local-config.yaml
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.mimir.rule: Host(`mimir.${BACKEND_DOMAIN}`)
+      traefik.http.routers.mimir.entrypoints: apisecure
+      traefik.http.services.mimir.loadbalancer.server.port: "9009"
+      traefik.http.middlewares.mimir-auth.basicauth.users: ${MIMIR_USER}:${MIMIR_PASS}
+      traefik.http.middlewares.mimir-auth.basicauth.removeheader: "true"
+      traefik.http.routers.mimir.middlewares: mimir-auth@docker
+      alloy.scrape: "true"
+      alloy.job: mimir
+      alloy.port: "9009"
+
+networks:
+  operations_traefik:
+    external: true
+  loki:
+  mimir:

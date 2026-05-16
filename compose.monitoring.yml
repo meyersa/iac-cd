@@ -1,0 +1,5 @@
+name: monitoring
+include:
+  - monitoring/compose.grafana.yml
+  - monitoring/compose.crowdsec.yml
+  - monitoring/compose.maxmind.yml

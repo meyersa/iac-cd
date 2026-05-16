@@ -1,0 +1,20 @@
+services:
+  maxmind-api:
+      image: observabilitystack/geoip-api:latest
+      container_name: maxmind-api
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+      labels:
+        - "alloy.blackbox=maxmind.${BACKEND_DOMAIN}:8443/1.1.1.1"
+        - "traefik.enable=true"
+        - "traefik.http.routers.maxmind-api.rule=Host(`maxmind.${BACKEND_DOMAIN}`)"
+        - "traefik.http.routers.maxmind-api.entrypoints=apisecure"
+        - "traefik.http.services.maxmind-api.loadbalancer.server.port=8080"
+        - "traefik.http.routers.maxmind-api.middlewares=noindex-header@file"
+
+networks:
+  operations_traefik:
+    external: true

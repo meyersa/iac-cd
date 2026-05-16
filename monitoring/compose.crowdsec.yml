@@ -1,0 +1,35 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest-debian
+    container_name: crowdsec
+    restart: unless-stopped
+    networks:
+      - operations_traefik
+      - loki
+    ports:
+      - "127.0.0.1:6060:6060"
+    expose:
+      - "8080"
+      - "7422"
+    env_file:
+      - ./compose.crowdsec.env
+    volumes:
+      - ./config/crowdsec-acquis.yml:/etc/crowdsec/acquis.yaml
+      - ./config/crowdsec-profiles.yml:/etc/crowdsec/profiles.yaml
+      - ./config/crowdsec-slack.yml:/etc/crowdsec/notifications/slack.yaml
+      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
+      - ${DATA_DIR}/crowdsec/data:/var/lib/crowdsec/data
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.crowdsec.rule: Host(`crowdsec.${BACKEND_DOMAIN}`)
+      traefik.http.routers.crowdsec.entrypoints: apisecure
+      traefik.http.services.crowdsec.loadbalancer.server.port: "8080"
+      alloy.scrape: "true"
+      alloy.job: crowdsec
+      alloy.port: "6060"
+
+networks:
+  operations_traefik:
+    external: true
+  loki:
+    external: true
