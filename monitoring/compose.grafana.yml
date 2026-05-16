@@ -10,8 +10,8 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     volumes:
-      - ${DATA_DIR}/grafana:/var/lib/grafana
-      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning
     labels:
       traefik.enable: "true"
       traefik.http.routers.grafana.rule: Host(`dash.${BACKEND_DOMAIN}`)
@@ -34,7 +34,7 @@ services:
     command:
       - -config.file=/etc/loki/local-config.yaml
     volumes:
-      - ${DATA_DIR}/loki:/loki
+      - loki-data:/loki
       - ./config/loki-config.yml:/etc/loki/local-config.yaml
     labels:
       traefik.enable: "true"
@@ -60,7 +60,7 @@ services:
     command:
       - -config.file=/etc/mimir/local-config.yaml
     volumes:
-      - ${DATA_DIR}/mimir:/mimir
+      - mimir-data:/mimir
       - ./config/mimir-config.yml:/etc/mimir/local-config.yaml
     labels:
       traefik.enable: "true"
@@ -74,6 +74,11 @@ services:
       alloy.job: mimir
       alloy.port: "9009"
 
+volumes: 
+  grafana-data:
+  loki-data:
+  mimir-data:
+  
 networks:
   operations_traefik:
     external: true
