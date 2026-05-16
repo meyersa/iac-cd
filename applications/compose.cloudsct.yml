@@ -1,0 +1,37 @@
+services:
+  cloudsct-frontend:
+      image: ghcr.io/meyersa/cloudsct-frontend:latest
+      container_name: cloudsct-frontend
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+        - storage_mongodb
+      env_file:
+        - ./compose.cloudsctl.env
+      labels: 
+        - "alloy.blackbox=cloudsct.${FRONTEND_DOMAIN}"
+        - "traefik.enable=true"
+        - "traefik.http.routers.cloudsct-frontend.rule=Host(`cloudsct.${FRONTEND_DOMAIN}`)"
+        - "traefik.http.routers.cloudsct-frontend.entrypoints=websecure"
+        - "traefik.http.services.cloudsct-frontend.loadbalancer.server.port=3000"
+        - "traefik.http.routers.cloudsct-frontend.middlewares=noindex-header@file"
+
+  cloudsct-backend:
+      image: ghcr.io/meyersa/cloudsct-backend:latest
+      container_name: cloudsct-backend
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - storage_mongodb
+      env_file:
+        - ./compose.cloudsctl.env
+
+networks:
+  operations_traefik:
+    external: true
+  storage_mongodb: 
+    external: true
+  

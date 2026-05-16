@@ -1,0 +1,20 @@
+services:
+  meyersa-frontend:
+      image: ghcr.io/meyersa/new-web:latest
+      container_name: meyersa-frontend
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+      labels: 
+        - "alloy.blackbox=${FRONTEND_DOMAIN}"
+        - "traefik.enable=true"
+        - "traefik.http.routers.meyersa-frontend.rule=Host(`${FRONTEND_DOMAIN}`)"
+        - "traefik.http.routers.meyersa-frontend.entrypoints=websecure"
+        - "traefik.http.services.meyersa-frontend.loadbalancer.server.port=3000"
+        - "traefik.http.routers.meyersa-frontend.middlewares=noindex-header@file"
+
+networks:
+  operations_traefik:
+    external: true
