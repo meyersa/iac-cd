@@ -11,7 +11,7 @@ services:
       - "127.0.0.1:3000:3000"
     volumes:
       - ${DATA_DIR}/grafana:/var/lib/grafana
-      - ${STATIC_DIR}/grafana/provisioning:/etc/grafana/provisioning
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
     labels:
       traefik.enable: "true"
       traefik.http.routers.grafana.rule: Host(`dash.${BACKEND_DOMAIN}`)

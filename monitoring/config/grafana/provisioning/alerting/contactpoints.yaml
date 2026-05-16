@@ -1,0 +1,30 @@
+apiVersion: 1
+contactPoints:
+    - orgId: 1
+      name: Discord_Alert
+      receivers:
+        - uid: dehu0c5ctid4wd
+          type: slack
+          settings:
+            url: ${DISCORD_ALERT_WEBHOOK_URL}/slack
+          disableResolveMessage: false
+
+    - orgId: 1
+      name: Discord_Login
+      receivers:
+        - uid: en82q2seyryw
+          type: slack
+          settings:
+            color: '#808080'
+            text: |-
+                {{ range .Alerts }}
+                IP: {{ .Labels.connecting_ip }}
+                User: {{ .Labels.connecting_user }}
+                Instance: {{ .Labels.instance }}
+                State: {{ .Labels.geoip_subdivision_name }}
+                Country: {{ .Labels.geoip_country_name }}
+                Continent: {{ .Labels.geoip_continent_name }}
+                {{ end }}
+            title: SSH Login
+            url: ${DISCORD_LOGIN_WEBHOOK_URL}/slack
+          disableResolveMessage: true
