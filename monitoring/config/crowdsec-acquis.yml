@@ -1,0 +1,22 @@
+listen_addr: 0.0.0.0:7422
+appsec_config: crowdsecurity/virtual-patching
+name: myAppSecComponent
+source: appsec
+labels:
+  type: appsec
+---
+# crowdsecurity/linux-lpe crowdsecurity/linux crowdsecurity/iptables crowdsecurity/sshd
+source: loki
+url: http://loki:3100/
+query: |
+  {job="journalctl"} | line_format `{{ __timestamp__ | date "Jan 02 15:04:05" }} {{.instance}} {{.syslog_identifier}}: {{ __line__ }}`
+labels:
+ type: syslog
+---
+# crowdsecurity/traefik
+source: loki
+url: http://loki:3100/
+query: |
+  {container_name="/traefik"} != `DBG` or `INFO` | detected_level = `unknown`
+labels:
+  type: traefik
