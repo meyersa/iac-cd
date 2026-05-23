@@ -31,5 +31,3 @@ services:
 networks:
   operations_traefik:
     external: true
-  loki:
-    external: true

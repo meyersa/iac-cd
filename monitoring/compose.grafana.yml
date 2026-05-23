@@ -9,6 +9,8 @@ services:
       - mimir
     ports:
       - "127.0.0.1:3000:3000"
+    env_file: 
+      - ./compose.grafana.env
     volumes:
       - grafana-data:/var/lib/grafana
       - ./config/grafana/provisioning:/etc/grafana/provisioning
