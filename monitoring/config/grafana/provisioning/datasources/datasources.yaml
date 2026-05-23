@@ -8,8 +8,10 @@ datasources:
     isDefault: true
     jsonData:
       prometheusType: Mimir
+    editable: ${GRAFANA_EDITABLE}
   - name: Loki
     uid: loki
     type: loki
     access: proxy
     url: http://loki:3100
+    editable: ${GRAFANA_EDITABLE}

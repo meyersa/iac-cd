@@ -43,7 +43,7 @@ services:
       traefik.http.routers.loki.rule: Host(`loki.${BACKEND_DOMAIN}`)
       traefik.http.routers.loki.entrypoints: apisecure
       traefik.http.services.loki.loadbalancer.server.port: "3100"
-      traefik.http.middlewares.loki-auth.basicauth.users: ${LOKI_USER}:${LOKI_PASS}
+      traefik.http.middlewares.loki-auth.basicauth.users: ${LOKI_USER}:${LOKI_BCRYPT_PASS}
       traefik.http.middlewares.loki-auth.basicauth.removeheader: "true"
       traefik.http.routers.loki.middlewares: loki-auth@docker
       alloy.scrape: "true"
@@ -69,7 +69,7 @@ services:
       traefik.http.routers.mimir.rule: Host(`mimir.${BACKEND_DOMAIN}`)
       traefik.http.routers.mimir.entrypoints: apisecure
       traefik.http.services.mimir.loadbalancer.server.port: "9009"
-      traefik.http.middlewares.mimir-auth.basicauth.users: ${MIMIR_USER}:${MIMIR_PASS}
+      traefik.http.middlewares.mimir-auth.basicauth.users: ${MIMIR_USER}:${MIMIR_BCRYPT_PASS}
       traefik.http.middlewares.mimir-auth.basicauth.removeheader: "true"
       traefik.http.routers.mimir.middlewares: mimir-auth@docker
       alloy.scrape: "true"

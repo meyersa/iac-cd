@@ -6,9 +6,9 @@ contactPoints:
         - uid: dehu0c5ctid4wd
           type: slack
           settings:
-            url: ${DISCORD_ALERT_WEBHOOK_URL}/slack
+            url: ${DISCORD_ERROR_WEBHOOK_URL}/slack
           disableResolveMessage: false
-
+          editable: ${GRAFANA_EDITABLE} 
     - orgId: 1
       name: Discord_Login
       receivers:
@@ -26,5 +26,6 @@ contactPoints:
                 Continent: {{ .Labels.geoip_continent_name }}
                 {{ end }}
             title: SSH Login
-            url: ${DISCORD_LOGIN_WEBHOOK_URL}/slack
+            url: ${DISCORD_ERROR_WEBHOOK_URL}/slack
           disableResolveMessage: true
+          editable: ${GRAFANA_EDITABLE}

@@ -8,6 +8,7 @@ groups:
         - uid: behu0enji18n4f
           title: CPU Usage
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -72,6 +73,7 @@ groups:
         - uid: dehu0wbd7kx6oc
           title: Memory Usage
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -136,6 +138,7 @@ groups:
         - uid: fehu0y1haoohsf
           title: Disk Space Usage
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -200,6 +203,7 @@ groups:
         - uid: fehu16jr6hmv4a
           title: Host Change
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -253,6 +257,7 @@ groups:
         - uid: eejlpso3trs3ka
           title: MongoDB Operation Latency
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -317,6 +322,7 @@ groups:
         - uid: eejlq7e7a1gjkc
           title: MongoDB Query Rate
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -377,6 +383,7 @@ groups:
         - uid: bejm3vsd18u80c
           title: Docker Error Percent by Container (Last 5 Minutes)
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               queryType: range
@@ -477,6 +484,7 @@ groups:
         - uid: aejm3ytkzewowe
           title: Docker Error Logs by Container (Last 5 Minutes)
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               queryType: range
@@ -563,6 +571,7 @@ groups:
         - uid: cejm41wgnnksgd
           title: Docker Logs by Container (Last 5 Minutes)
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               queryType: range
@@ -649,6 +658,7 @@ groups:
         - uid: eejm5xiikpnnkc
           title: Response Time
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -713,6 +723,7 @@ groups:
         - uid: fejm63f2z5am8f
           title: High Web Requests
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -777,6 +788,7 @@ groups:
         - uid: cejm69daoo54we
           title: Website Offline
           condition: B
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: g
               relativeTimeRange:
@@ -841,6 +853,7 @@ groups:
         - uid: dejm8niuvtq0wf
           title: HTTP Success Rate
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -905,6 +918,7 @@ groups:
         - uid: fejm8w3zwxqf4c
           title: SSH Login
           condition: C
+          editable: ${GRAFANA_EDITABLE}
           data:
             - refId: A
               relativeTimeRange:
@@ -947,7 +961,7 @@ groups:
                 type: threshold
           dashboardUid: beik48tmbiolce
           panelId: 2
-          noDataState: NoData
+          noDataState: OK
           execErrState: Error
           annotations:
             __dashboardUid__: beik48tmbiolce
