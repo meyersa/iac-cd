@@ -1,29 +1,80 @@
-type: slack           # Don't change
-name: slack_default   # Must match the registered plugin in the profile
+# Skip Slack type to get webhook
+type: http
+name: slack_default
 
-# One of "trace", "debug", "info", "warn", "error", "off"
 log_level: info
 
-# group_wait:         # Time to wait collecting alerts before relaying a message to this plugin, eg "30s"
-# group_threshold:    # Amount of alerts that triggers a message before <group_wait> has expired, eg "10"
-# max_retry:          # Number of attempts to relay messages to plugins in case of error
-# timeout:            # Time to wait for response from the plugin before considering the attempt a failure, eg "10s"
+# Avoid spamming notifications
+group_wait: 30s
 
-#-------------------------
-# plugin-specific options
 
-# The following template receives a list of models.Alert objects
-# The output goes in the slack message
 format: |
-  {{range . -}}
-  {{$alert := . -}}
-  {{range .Decisions -}}
-  {{if $alert.Source.Cn -}}
-  :flag-{{$alert.Source.Cn}}: <https://www.whois.com/whois/{{.Value}}|{{.Value}}> will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}} on machine '{{$alert.MachineID}}'. <https://app.crowdsec.net/cti/{{.Value}}|CrowdSec CTI>{{end}}
-  {{if not $alert.Source.Cn -}}
-  :pirate_flag: <https://www.whois.com/whois/{{.Value}}|{{.Value}}> will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}} on machine '{{$alert.MachineID}}'.  <https://app.crowdsec.net/cti/{{.Value}}|CrowdSec CTI>{{end}}
-  {{end -}}
-  {{end -}}
+  {
+    "attachments": [
+      {{range . -}}
+      {{$alert := . -}}
+      {{range .Decisions -}}
+      {{$cti := .Value | CrowdsecCTI -}}
 
+      {
+        "color": "#ff0000",
+        "ts": "{{($alert.StartAt.Unix)}}",
+        "title": "CrowdSec Alert",
+        "title_link": "https://app.crowdsec.net/cti/{{.Value}}",
+        "text": "Potential threat detected for {{.Value}}",
 
-webhook: ${CROWDSEC_WEBHOOK}
+        "fields": [
+          {
+            "title": "IP",
+            "value": "<https://www.whois.com/whois/{{.Value}}|{{.Value}}>",
+            "short": true
+          },
+          {
+            "title": "Action",
+            "value": "{{.Type}} for {{.Duration}}",
+            "short": true
+          },
+          {
+            "title": "Scenario",
+            "value": "{{.Scenario}}",
+            "short": true
+          },
+          {
+            "title": "Machine",
+            "value": "{{ $alert.MachineID }}",
+            "short": true
+          }
+          {{if $alert.Source.Cn -}},
+          {
+            "title": "Country",
+            "value": "{{$alert.Source.Cn | upper}}",
+            "short": true
+          }
+          {{end -}}
+
+          {{if $cti.Location.City -}},
+          {
+            "title": "City",
+            "value": "{{$cti.Location.City}}",
+            "short": true
+          }
+          {{end -}}
+
+          {{if $cti.GetMaliciousnessScore -}},
+          {
+            "title": "Maliciousness",
+            "value": "{{mulf $cti.GetMaliciousnessScore 100 | floor}}%",
+            "short": true
+          }
+          {{end -}}
+        ]
+      }
+      {{end -}}
+      {{end -}}
+    ]
+  }
+
+url: ${CROWDSEC_WEBHOOK}
+method: POST
+headers:
+  Content-Type: application/json
