@@ -18,7 +18,7 @@ services:
     volumes:
       - ./crowdsec/crowdsec-acquis.yml:/etc/crowdsec/acquis.yaml
       - ./crowdsec/crowdsec-profiles.yml:/etc/crowdsec/profiles.yaml
-      - ./crowdsec/crowdsec-slack.yml:/etc/crowdsec/notifications/discord.yaml
+      - ./crowdsec/crowdsec-discord.yml:/etc/crowdsec/notifications/discord.yaml
       - crowdsec-config:/etc/crowdsec
       - crowdsec-data:/var/lib/crowdsec/data
     labels:
