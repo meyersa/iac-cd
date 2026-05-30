@@ -1,0 +1,23 @@
+type: http
+name: discord_default
+
+log_level: info
+
+group_wait: 30s
+
+format: |
+  {
+    "content": "",
+    "embeds": [
+      {
+        "title": "CrowdSec Alert",
+        "color": 16711680,
+        "description": "{{range .}}{{ $alert := . }}{{range .Decisions}}{{if $alert.Source.Cn}}:flag-{{$alert.Source.Cn | lower}}:{{else}}:pirate_flag:{{end}} <https://www.whois.com/whois/{{.Value}}|{{.Value}}> will get {{.Type}} for next {{.Duration}} for triggering {{.Scenario}} on machine '{{$alert.MachineID}}'. https://app.crowdsec.net/cti/{{.Value}} {{end}}{{end}}"
+      }
+    ]
+  }
+
+url: ${CROWDSEC_WEBHOOK}
+method: POST
+headers:
+  Content-Type: application/json
