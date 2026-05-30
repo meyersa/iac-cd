@@ -19,8 +19,7 @@ services:
       - ./crowdsec/crowdsec-acquis.yml:/etc/crowdsec/acquis.yaml
       - ./crowdsec/crowdsec-profiles.yml:/etc/crowdsec/profiles.yaml
       - ./crowdsec/crowdsec-slack.yml:/etc/crowdsec/notifications/slack.yaml
-      - ${DATA_DIR}/crowdsec/config:/etc/crowdsec
-      - ${DATA_DIR}/crowdsec/data:/var/lib/crowdsec/data
+      - crowdsec-data:/etc/crowdsec
     labels:
       traefik.enable: "true"
       traefik.http.routers.crowdsec.rule: Host(`crowdsec.${BACKEND_DOMAIN}`)
@@ -33,3 +32,6 @@ services:
 networks:
   operations_traefik:
     external: true
+
+volumes: 
+  crowdsec-data:
