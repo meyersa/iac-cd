@@ -16,7 +16,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${STATIC_DIR}/traefik/letsencrypt:/letsencrypt
-      - ./config/dynamic_conf.yml:/config/dynamic_conf.yaml
+      - ./traefik/dynamic_conf.yml:/config/dynamic_conf.yaml
     labels:
       alloy.scrape: "true"
       alloy.job: traefik

@@ -15,7 +15,7 @@ services:
       - ./compose.grafana.env
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./config/grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/grafana/provisioning:/etc/grafana/provisioning
     labels:
       traefik.enable: "true"
       traefik.http.routers.grafana.rule: Host(`dash.${BACKEND_DOMAIN}`)
@@ -41,7 +41,7 @@ services:
       - -config.file=/etc/loki/local-config.yaml
     volumes:
       - loki-data:/loki
-      - ./config/loki-config.yml:/etc/loki/local-config.yaml
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml
     labels:
       traefik.enable: "true"
       traefik.http.routers.loki.rule: Host(`loki.${BACKEND_DOMAIN}`)
@@ -69,7 +69,7 @@ services:
       - -config.file=/etc/mimir/local-config.yaml
     volumes:
       - mimir-data:/mimir
-      - ./config/mimir-config.yml:/etc/mimir/local-config.yaml
+      - ./mimir/mimir-config.yml:/etc/mimir/local-config.yaml
     labels:
       traefik.enable: "true"
       traefik.http.routers.mimir.rule: Host(`mimir.${BACKEND_DOMAIN}`)
