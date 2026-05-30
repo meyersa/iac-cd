@@ -13,6 +13,8 @@ services:
       - "7422"
     env_file:
       - ./compose.crowdsec.env
+    mem_limit: 256m
+    cpus: 0.5
     volumes:
       - ./config/crowdsec-acquis.yml:/etc/crowdsec/acquis.yaml
       - ./config/crowdsec-profiles.yml:/etc/crowdsec/profiles.yaml

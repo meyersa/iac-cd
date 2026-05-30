@@ -11,6 +11,8 @@ services:
       - "8443:8443"
       - "127.0.0.1:8080:8080"
       - "127.0.0.1:8082:8082"
+    mem_limit: 512m
+    cpus: 1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${STATIC_DIR}/traefik/letsencrypt:/letsencrypt

@@ -3,6 +3,8 @@ services:
     image: mongo:latest
     container_name: mongodb
     restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.5
     ports:
       - "127.0.0.1:27017:27017"
     env_file:
