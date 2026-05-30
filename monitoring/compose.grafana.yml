@@ -15,7 +15,7 @@ services:
       - ./compose.grafana.env
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/provisioning:/etc/grafana/provisioning
     labels:
       traefik.enable: "true"
       traefik.http.routers.grafana.rule: Host(`dash.${BACKEND_DOMAIN}`)
