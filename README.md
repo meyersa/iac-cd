@@ -1,40 +1,78 @@
-# Continous Deployment Resources 
+# Continous Deployment Resources
 
-Compose files used by Ansible to deploy resources. 
+Compose files used by Ansible to deploy resources.
 
-## Compose 
+## Docker Compose
 
-Compose is organized into sub files and resources and inherited into a main compose file that imports them. 
+Deployment resources are grouped by component in a compose file. Using this compose file, an "we have Argo at home" approach can be used for managing projects without the overhead of Kubernetes.
 
-### Operations 
+Using options like remove orphans and recreate, this directory can be expanded out to manage all resources.
+
+TODO: In the future, use `docker ps` to build a list of containers and reconcile Docker to parity Argo prune
+
+### Operations
+
+Resources related to supporting other resources.
 
 Traefik
 
 ### Monitoring
 
-Full monitoring and alerting stack 
+Resources for monitoring and alerting on infrastructure.
 
-- Grafana 
+- Grafana
 - Loki
 - Mimir
-- Crowdsec 
+- Crowdsec
+- Maxmind
 
-### Storage 
+#### Grafana Logic
 
-MongoDB 
+| Alert                 | Scope     | Channel | Source  | Purpose                                                                          |
+| --------------------- | --------- | ------- | ------- | -------------------------------------------------------------------------------- |
+| Host Up               | Host      | Alerts  | Grafana | When a host goes up or down                                                      |
+| Host Errors           | Host      | Alerts  | Grafana | When a host has a large amount of error logs in JournalCTL                       |
+| Host CPU              | Host      | Alerts  | Grafana | Host high CPU usage                                                              |
+| Host Memory           | Host      | Alerts  | Grafana | Host high memory usage                                                           |
+| Host Storage          | Host      | Alerts  | Grafana | Host low storage remaining                                                       |
+| SSH Login             | Host      | Info    | Grafana | When someone SSHs in to the server                                               |
+| Container restarting  | Container | Alerts  | Grafana | When a container is restarting                                                   |
+| Container errors      | Container | Alerts  | Grafana | When a container is erroring                                                     |
+| Container HTTP Errors | Container | Alerts  | Grafana | When a container has a high percentage of HTTP errors relative to normal traffic |
+| Container HTTP Status | Container | Alerts  | Grafana | When a container's web status goes up or down                                    |
 
-### Applications 
+| Crowdsec Action | Environment | Info | Crowdsec | When an attack is detected |
+
+TODO: See if Crowdsec actions can be grouped, or instead alerted through Grafana so it can be handled better
+
+| Dashboard | Target | Purpose |
+
+#### External Alerts
+
+In the case that Grafana itself goes down, it's monitored externally by UptimeRobot
+TODO: Switch UptimeRobot -> Oracle Cloud Alerting
+
+### Storage
+
+Storage instances
+
+- MongoDB
+
+### Applications
 
 Applications built on GHCR.io
 
 ### Media
 
-Media tooling
+TODO: Setup resources for managing media and debrid
 
-## Ansible
-
-Ansible syncs this repository looking for changes and applies them if a change is found using `docker compose up -d` 
+- Sonarr
+- Radarr
+- Prowlarr
+- Buildarr
+- Jellyfin?
 
 ## Updates
 
-Renovate watches this repository and makes PRs on changes which get applied to a staging server and then merges to the main server if successful
+TODO: Switch to specific containers and setup renovate to watch them
+TODO: Setup CI for renovate updates to apply them to `dev` and health check the server before auto merging (GitHub build post)

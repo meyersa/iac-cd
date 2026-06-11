@@ -39,7 +39,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 80
+                            - 85
                         type: gt
                       operator:
                         type: and
@@ -62,7 +62,7 @@ groups:
           panelId: 1
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: cehtln7abzjeoc
             __panelId__: "1"
@@ -104,7 +104,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 80
+                            - 85
                         type: gt
                       operator:
                         type: and
@@ -127,7 +127,7 @@ groups:
           panelId: 2
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: cehtln7abzjeoc
             __panelId__: "2"
@@ -169,7 +169,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 80
+                            - 85
                         type: gt
                       operator:
                         type: and
@@ -192,7 +192,7 @@ groups:
           panelId: 4
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: cehtln7abzjeoc
             __panelId__: "4"
@@ -288,7 +288,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 500
+                            - 3000
                         type: gt
                       operator:
                         type: and
@@ -311,7 +311,7 @@ groups:
           panelId: 14
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: fehtp8m4stvcwc
             __panelId__: "14"
@@ -372,7 +372,7 @@ groups:
           panelId: 5
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: fehtp8m4stvcwc
             __panelId__: "5"
@@ -473,7 +473,7 @@ groups:
           panelId: 5
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: dehtnp7mr1h4wa
             __panelId__: "5"
@@ -560,7 +560,7 @@ groups:
           panelId: 3
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: dehtnp7mr1h4wa
             __panelId__: "3"
@@ -647,7 +647,7 @@ groups:
           panelId: 1
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: dehtnp7mr1h4wa
             __panelId__: "1"
@@ -689,7 +689,7 @@ groups:
                 conditions:
                     - evaluator:
                         params:
-                            - 500
+                            - 3000
                         type: gt
                       operator:
                         type: and
@@ -712,7 +712,7 @@ groups:
           panelId: 3
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: behtql2uans3ka
             __panelId__: "3"
@@ -777,7 +777,7 @@ groups:
           panelId: 1
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: behtql2uans3ka
             __panelId__: "1"
@@ -842,7 +842,7 @@ groups:
           panelId: 8
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: behtql2uans3ka
             __panelId__: "8"
@@ -907,7 +907,7 @@ groups:
           panelId: 9
           noDataState: NoData
           execErrState: Error
-          for: 3m
+          for: 5m
           annotations:
             __dashboardUid__: behtql2uans3ka
             __panelId__: "9"
