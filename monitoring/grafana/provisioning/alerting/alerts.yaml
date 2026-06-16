@@ -1,972 +1,871 @@
 apiVersion: 1
 groups:
-    - orgId: 1
-      name: Constant
-      folder: health
-      interval: 1m
-      rules:
-        - uid: behu0enji18n4f
-          title: CPU Usage
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 1800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: 'sum by(instance) (rate(node_cpu_seconds_total{mode!="idle"}[5m])) / sum by(instance) (rate(node_cpu_seconds_total[5m])) * 100 '
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 85
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: cehtln7abzjeoc
-          panelId: 1
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: cehtln7abzjeoc
-            __panelId__: "1"
-            summary: High CPU
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: dehu0wbd7kx6oc
-          title: Memory Usage
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 1800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: sum by(instance) (1 - (node_memory_MemAvailable_bytes{job="integrations/unix"} / node_memory_MemTotal_bytes{job="integrations/unix"})) * 100
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 85
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: cehtln7abzjeoc
-          panelId: 2
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: cehtln7abzjeoc
-            __panelId__: "2"
-            summary: High Memory Usage
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: fehu0y1haoohsf
-          title: Disk Space Usage
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 1800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: sum by(instance) (100 - (node_filesystem_free_bytes{mountpoint="/", job="integrations/unix"} / node_filesystem_size_bytes{mountpoint="/", job="integrations/unix"} * 100))
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 85
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: cehtln7abzjeoc
-          panelId: 4
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: cehtln7abzjeoc
-            __panelId__: "4"
-            summary: Low space on host
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: fehu16jr6hmv4a
-          title: Host Change
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 600
-                to: 0
-              datasourceUid: mimir
-              model:
-                editorMode: code
-                expr: max_over_time(up{job="integrations/unix"}[1h]) unless up
-                instant: true
-                intervalMs: 1000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 0
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: ""
-          panelId: 0
-          noDataState: OK
-          execErrState: Alerting
-          for: 3m
-          annotations:
-            summary: Host is down
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: eejlpso3trs3ka
-          title: MongoDB Operation Latency
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 1800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: sum by(type) (rate(mongodb_mongod_op_latencies_latency_total[5m]))
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 3000
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: fehtp8m4stvcwc
-          panelId: 14
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: fehtp8m4stvcwc
-            __panelId__: "14"
-            summary: High latency on MongoDB operations
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: eejlq7e7a1gjkc
-          title: MongoDB Query Rate
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 1800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                editorMode: code
-                expr: "rate(mongodb_op_counters_total{type=\"query\"}[5m])\t"
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 5
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: fehtp8m4stvcwc
-          panelId: 5
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: fehtp8m4stvcwc
-            __panelId__: "5"
-            summary: High MongoDB Query Rate
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: bejm3vsd18u80c
-          title: Docker Error Percent by Container (Last 5 Minutes)
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
+  - orgId: 1
+    name: Constant
+    folder: health
+    interval: 1m
+    rules:
+      - uid: behu0enji18n4f
+        title: CPU Usage
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: 'sum by(instance) (rate(node_cpu_seconds_total{mode!="idle"}[5m])) / sum by(instance) (rate(node_cpu_seconds_total[5m])) * 100 '
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 85
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: cehtln7abzjeoc
+        panelId: 1
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: cehtln7abzjeoc
+          __panelId__: "1"
+          summary: High CPU
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: dehu0wbd7kx6oc
+        title: Memory Usage
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: sum by(instance) (1 - (node_memory_MemAvailable_bytes{job="integrations/unix"} / node_memory_MemTotal_bytes{job="integrations/unix"})) * 100
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 85
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: cehtln7abzjeoc
+        panelId: 2
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: cehtln7abzjeoc
+          __panelId__: "2"
+          summary: High Memory Usage
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: fehu0y1haoohsf
+        title: Disk Space Usage
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: sum by(instance) (100 - (node_filesystem_free_bytes{mountpoint="/", job="integrations/unix"} / node_filesystem_size_bytes{mountpoint="/", job="integrations/unix"} * 100))
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 85
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: cehtln7abzjeoc
+        panelId: 4
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: cehtln7abzjeoc
+          __panelId__: "4"
+          summary: Low space on host
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: fehu16jr6hmv4a
+        title: Host Change
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: mimir
+            model:
+              editorMode: code
+              expr: max_over_time(up{job="integrations/unix"}[1h]) unless up
+              instant: true
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: ""
+        panelId: 0
+        noDataState: OK
+        execErrState: Alerting
+        for: 3m
+        annotations:
+          summary: Host is down
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: eejlpso3trs3ka
+        title: MongoDB Operation Latency
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: sum by(type) (rate(mongodb_mongod_op_latencies_latency_total[5m]))
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 3000
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: fehtp8m4stvcwc
+        panelId: 14
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: fehtp8m4stvcwc
+          __panelId__: "14"
+          summary: High latency on MongoDB operations
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: eejlq7e7a1gjkc
+        title: MongoDB Query Rate
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 1800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              editorMode: code
+              expr: "rate(mongodb_op_counters_total{type=\"query\"}[5m])\t"
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 5
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: fehtp8m4stvcwc
+        panelId: 5
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: fehtp8m4stvcwc
+          __panelId__: "5"
+          summary: High MongoDB Query Rate
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: aejm3ytkzewowe
+        title: Docker Error Logs by Container (Last 5 Minutes)
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: loki
+            model:
+              datasource:
+                type: loki
+                uid: loki
+              direction: backward
+              editorMode: builder
+              expr: topk(5, sum by(container_name) (count_over_time({job="docker"} |~ `critical|err|severe|panic` [5m])))
+              instant: true
+              intervalMs: 1000
+              legendFormat: "{{instance}}"
+              maxDataPoints: 43200
               queryType: range
-              relativeTimeRange:
-                from: 300
-                to: 0
-              datasourceUid: loki
-              model:
-                datasource:
-                    type: loki
-                    uid: loki
-                direction: backward
-                editorMode: code
-                expr: |
-                  100 *
-                  (
-                    sum by(container_name) (
-                      rate({job="docker"} |~ "critical|err|severe|panic" [1h])
-                    )
-                    /
-                    sum by(container_name) (
-                      rate({job="docker"} [1h])
-                    )
-                  )
-                  > 5 and
-                    sum by(container_name) (
-                      rate({job="docker"} [1h])
-                    ) > 0.1
-                instant: true
-                intervalMs: 1000
-                legendFormat: '{{container_name}}'
-                maxDataPoints: 43200
-                queryType: range
-                range: false
-                refId: A
-            - refId: B
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params: []
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - B
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                reducer: last
-                refId: B
-                type: reduce
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 30
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: B
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: dehtnp7mr1h4wa
-          panelId: 5
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: dehtnp7mr1h4wa
-            __panelId__: "5"
-            summary: High rate of errors for container
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: aejm3ytkzewowe
-          title: Docker Error Logs by Container (Last 5 Minutes)
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
+              range: false
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: []
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 100
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: dehtnp7mr1h4wa
+        panelId: 3
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: dehtnp7mr1h4wa
+          __panelId__: "3"
+          summary: High Error Logs Volume for Container
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: cejm41wgnnksgd
+        title: Docker Logs by Container (Last 5 Minutes)
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            queryType: range
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasourceUid: loki
+            model:
+              datasource:
+                type: loki
+                uid: loki
+              direction: backward
+              editorMode: code
+              expr: topk(5, sum by(container_name) (count_over_time({job="docker"} [5m])))
+              instant: true
+              intervalMs: 1000
+              legendFormat: "{{instance}}"
+              maxDataPoints: 43200
               queryType: range
-              relativeTimeRange:
-                from: 300
-                to: 0
-              datasourceUid: loki
-              model:
-                datasource:
-                    type: loki
-                    uid: loki
-                direction: backward
-                editorMode: builder
-                expr: topk(5, sum by(container_name) (count_over_time({job="docker"} |~ `critical|err|severe|panic` [5m])))
-                instant: true
-                intervalMs: 1000
-                legendFormat: '{{instance}}'
-                maxDataPoints: 43200
-                queryType: range
-                range: false
-                refId: A
-            - refId: B
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params: []
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - B
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                reducer: last
-                refId: B
-                type: reduce
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 100
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: B
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: dehtnp7mr1h4wa
-          panelId: 3
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: dehtnp7mr1h4wa
-            __panelId__: "3"
-            summary: High Error Logs Volume for Container
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: cejm41wgnnksgd
-          title: Docker Logs by Container (Last 5 Minutes)
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              queryType: range
-              relativeTimeRange:
-                from: 300
-                to: 0
-              datasourceUid: loki
-              model:
-                datasource:
-                    type: loki
-                    uid: loki
-                direction: backward
-                editorMode: code
-                expr: topk(5, sum by(container_name) (count_over_time({job="docker"} [5m])))
-                instant: true
-                intervalMs: 1000
-                legendFormat: '{{instance}}'
-                maxDataPoints: 43200
-                queryType: range
-                range: false
-                refId: A
-            - refId: B
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params: []
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - B
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                reducer: last
-                refId: B
-                type: reduce
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 5000
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: B
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: dehtnp7mr1h4wa
-          panelId: 1
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: dehtnp7mr1h4wa
-            __panelId__: "1"
-            summary: High Log Volume for Container
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: eejm5xiikpnnkc
-          title: Response Time
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 10800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: "avg by (target_container) (\r\n  label_replace(avg_over_time(probe_duration_seconds[5m]), \"target_container\", \"$1\", \"target_container\", \"^/?(.*)$\")\r\n) * 1000"
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 3000
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: behtql2uans3ka
-          panelId: 3
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: behtql2uans3ka
-            __panelId__: "3"
-            summary: Website has high latency
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: fejm63f2z5am8f
-          title: High Web Requests
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 10800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: "sum by(service) (\r\n  label_replace(rate(traefik_service_requests_total[5m]), \"service\", \"$1\", \"service\", \"^(.*)@.*$\")\r\n)"
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 10
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: behtql2uans3ka
-          panelId: 1
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: behtql2uans3ka
-            __panelId__: "1"
-            summary: Website has high request amounts
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: cejm69daoo54we
-          title: Website Offline
-          condition: B
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: g
-              relativeTimeRange:
-                from: 10800
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: probe_success
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: g
-                useBackend: false
-            - refId: B
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 0
-                        type: eq
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - B
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: g
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: B
-                type: threshold
-          dashboardUid: behtql2uans3ka
-          panelId: 8
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: behtql2uans3ka
-            __panelId__: "8"
-            summary: Website is offline
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: dejm8niuvtq0wf
-          title: HTTP Success Rate
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 86400
-                to: 0
-              datasourceUid: mimir
-              model:
-                adhocFilters: []
-                datasource:
-                    type: prometheus
-                    uid: mimir
-                disableTextWrap: false
-                editorMode: code
-                expr: (sum(rate(traefik_service_requests_total{code=~"2.."}[5m]) * 100)) / sum(rate(traefik_service_requests_total[5m]))
-                fullMetaSearch: false
-                includeNullMetadata: true
-                instant: true
-                interval: ""
-                intervalMs: 15000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-                useBackend: false
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 90
-                        type: lt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: behtql2uans3ka
-          panelId: 9
-          noDataState: NoData
-          execErrState: Error
-          for: 5m
-          annotations:
-            __dashboardUid__: behtql2uans3ka
-            __panelId__: "9"
-            summary: HTTP Success Rate is lower than it should be
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Alert
-        - uid: fejm8w3zwxqf4c
-          title: SSH Login
-          condition: C
-          editable: ${GRAFANA_EDITABLE}
-          data:
-            - refId: A
-              relativeTimeRange:
-                from: 600
-                to: 0
-              datasourceUid: mimir
-              model:
-                editorMode: code
-                expr: increase(loki_process_custom_ssh_success[5m])
-                instant: true
-                intervalMs: 1000
-                legendFormat: __auto
-                maxDataPoints: 43200
-                range: false
-                refId: A
-            - refId: C
-              datasourceUid: __expr__
-              model:
-                conditions:
-                    - evaluator:
-                        params:
-                            - 0
-                        type: gt
-                      operator:
-                        type: and
-                      query:
-                        params:
-                            - C
-                      reducer:
-                        params: []
-                        type: last
-                      type: query
-                datasource:
-                    type: __expr__
-                    uid: __expr__
-                expression: A
-                intervalMs: 1000
-                maxDataPoints: 43200
-                refId: C
-                type: threshold
-          dashboardUid: beik48tmbiolce
-          panelId: 2
-          noDataState: OK
-          execErrState: Error
-          annotations:
-            __dashboardUid__: beik48tmbiolce
-            __panelId__: "2"
-            summary: Successful User Login
-          isPaused: false
-          notification_settings:
-            receiver: Discord_Login
+              range: false
+              refId: A
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params: []
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              reducer: last
+              refId: B
+              type: reduce
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 5000
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: dehtnp7mr1h4wa
+        panelId: 1
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: dehtnp7mr1h4wa
+          __panelId__: "1"
+          summary: High Log Volume for Container
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: eejm5xiikpnnkc
+        title: Response Time
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 10800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: "avg by (target_container) (\r\n  label_replace(avg_over_time(probe_duration_seconds[5m]), \"target_container\", \"$1\", \"target_container\", \"^/?(.*)$\")\r\n) * 1000"
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 3000
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: behtql2uans3ka
+        panelId: 3
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: behtql2uans3ka
+          __panelId__: "3"
+          summary: Website has high latency
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: fejm63f2z5am8f
+        title: High Web Requests
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 10800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: "sum by(service) (\r\n  label_replace(rate(traefik_service_requests_total[5m]), \"service\", \"$1\", \"service\", \"^(.*)@.*$\")\r\n)"
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 10
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: behtql2uans3ka
+        panelId: 1
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: behtql2uans3ka
+          __panelId__: "1"
+          summary: Website has high request amounts
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: cejm69daoo54we
+        title: Website Offline
+        condition: B
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: g
+            relativeTimeRange:
+              from: 10800
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: probe_success
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: g
+              useBackend: false
+          - refId: B
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: eq
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - B
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: g
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: B
+              type: threshold
+        dashboardUid: behtql2uans3ka
+        panelId: 8
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: behtql2uans3ka
+          __panelId__: "8"
+          summary: Website is offline
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: dejm8niuvtq0wf
+        title: HTTP Success Rate
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 86400
+              to: 0
+            datasourceUid: mimir
+            model:
+              adhocFilters: []
+              datasource:
+                type: prometheus
+                uid: mimir
+              disableTextWrap: false
+              editorMode: code
+              expr: (sum(rate(traefik_service_requests_total{code=~"2.."}[5m]) * 100)) / sum(rate(traefik_service_requests_total[5m]))
+              fullMetaSearch: false
+              includeNullMetadata: true
+              instant: true
+              interval: ""
+              intervalMs: 15000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+              useBackend: false
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 90
+                    type: lt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: behtql2uans3ka
+        panelId: 9
+        noDataState: NoData
+        execErrState: Error
+        for: 5m
+        annotations:
+          __dashboardUid__: behtql2uans3ka
+          __panelId__: "9"
+          summary: HTTP Success Rate is lower than it should be
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Alert
+      - uid: fejm8w3zwxqf4c
+        title: SSH Login
+        condition: C
+        editable: ${GRAFANA_EDITABLE}
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: mimir
+            model:
+              editorMode: code
+              expr: increase(loki_process_custom_ssh_success[5m])
+              instant: true
+              intervalMs: 1000
+              legendFormat: __auto
+              maxDataPoints: 43200
+              range: false
+              refId: A
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              conditions:
+                - evaluator:
+                    params:
+                      - 0
+                    type: gt
+                  operator:
+                    type: and
+                  query:
+                    params:
+                      - C
+                  reducer:
+                    params: []
+                    type: last
+                  type: query
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: A
+              intervalMs: 1000
+              maxDataPoints: 43200
+              refId: C
+              type: threshold
+        dashboardUid: beik48tmbiolce
+        panelId: 2
+        noDataState: OK
+        execErrState: Error
+        annotations:
+          __dashboardUid__: beik48tmbiolce
+          __panelId__: "2"
+          summary: Successful User Login
+        isPaused: false
+        notification_settings:
+          receiver: Discord_Login
