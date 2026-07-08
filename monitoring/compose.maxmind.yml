@@ -1,5 +1,6 @@
 services:
   maxmind-api:
+      # Slated for replacement soon
       image: observabilitystack/geoip-api:latest
       container_name: maxmind-api
       restart: unless-stopped

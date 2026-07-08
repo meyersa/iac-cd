@@ -1,4 +1,5 @@
 services:
+  # Slated for replacement soon
   whoami-frontend:
       image: traefik/whoami
       container_name: whoami-frontend
