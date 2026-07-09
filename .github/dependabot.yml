@@ -1,0 +1,19 @@
+---
+version: 2
+
+updates:
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/applications"
+      - "/monitoring"
+      - "/operations"
+      - "/storage"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Detroit"
+    labels:
+      - "dependencies"
+      - "docker"
+    open-pull-requests-limit: 5
