@@ -4,4 +4,4 @@ include:
   - applications/compose.meyersa.yml
   - applications/compose.travel.yml
   - applications/compose.truthradar.yml
-  - applications/compose.whoami.yml
+  - applications/compose.test.yml
