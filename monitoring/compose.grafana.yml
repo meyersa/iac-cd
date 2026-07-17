@@ -7,6 +7,12 @@ services:
       - operations_traefik
       - loki
       - mimir
+    # Docker does nothing with a failing health check
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "curl -fsS http://127.0.0.1:3000/api/health >/dev/null || kill -SIGKILL 1"
+      ] 
     mem_limit: 1g
     cpus: 1
     ports:
