@@ -2,7 +2,7 @@
 name: Auto Merge
 
 on:
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
@@ -14,4 +14,4 @@ permissions:
 
 jobs:
   automerge:
-    uses: meyersa/iac-ci/.github/workflows/reusable-automerge.yml@main
+    uses: meyerstk/iac-ci/.github/workflows/reusable-automerge.yml@main
