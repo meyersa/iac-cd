@@ -1,0 +1,23 @@
+services:
+  geoip-api:
+      # Slated for replacement soon
+      image: ghcr.io/meyerstk/app-geoip:latest
+      container_name: geoip
+      restart: unless-stopped
+      mem_limit: 256m
+      cpus: 0.5
+      networks:
+        - operations_traefik
+      env_file: 
+        - ./compose.support.env
+      labels:
+        - "alloy.blackbox=geoip.${BACKEND_DOMAIN}:8443/1.1.1.1"
+        - "traefik.enable=true"
+        - "traefik.http.routers.geoip-api.rule=Host(`geoip.${BACKEND_DOMAIN}`)"
+        - "traefik.http.routers.geoip-api.entrypoints=apisecure"
+        - "traefik.http.services.geoip-api.loadbalancer.server.port=8000"
+        - "traefik.http.routers.geoip-api.middlewares=noindex-header@file"
+
+networks:
+  operations_traefik:
+    external: true
