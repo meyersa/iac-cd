@@ -11,7 +11,7 @@ services:
       env_file: 
         - ./compose.support.env
       labels:
-        - "alloy.blackbox=geoip.${BACKEND_DOMAIN}:8443/1.1.1.1"
+        - "alloy.blackbox=geoip.${BACKEND_DOMAIN}:8443/12.12.12.12"
         - "traefik.enable=true"
         - "traefik.http.routers.geoip-api.rule=Host(`geoip.${BACKEND_DOMAIN}`)"
         - "traefik.http.routers.geoip-api.entrypoints=apisecure"
