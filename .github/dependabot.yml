@@ -16,6 +16,8 @@ updates:
     labels:
       - "dependencies"
       - "docker"
+    ignore:
+      - dependency-name: "grafana"
     open-pull-requests-limit: 5
   - package-ecosystem: github-actions
     directory: /
