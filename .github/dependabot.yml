@@ -13,11 +13,8 @@ updates:
       day: "monday"
       time: "06:00"
       timezone: "America/Detroit"
-    labels:
-      - "dependencies"
-      - "docker"
     ignore:
-      - dependency-name: "grafana"
+      - dependency-name: "grafana/grafana"
     open-pull-requests-limit: 5
   - package-ecosystem: github-actions
     directory: /
