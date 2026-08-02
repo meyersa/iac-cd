@@ -1,7 +1,7 @@
 services:
   geoip-api:
       # Slated for replacement soon
-      image: ghcr.io/meyersa/app-geoip:6ea90078feec592b571844d80dec9bd574ae6e4f
+      image: ghcr.io/meyersa/app-geoip:latest
       container_name: geoip
       restart: unless-stopped
       mem_limit: 256m
