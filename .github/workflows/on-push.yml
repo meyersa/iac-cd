@@ -55,3 +55,12 @@ jobs:
           set -euo pipefail
           branch_spec="main:deploy:${BRANCH_NAME}"
           ssh "${SSH_DEV_USER}@${SSH_DEV_HOST}" "ansible-pull $(printf '%q' "${branch_spec}")"
+
+  checks:
+    name: checks / Required
+    runs-on: ubuntu-latest
+    needs:
+      - deploy-dev
+    steps:
+      - name: Succeed without running checks
+        run: echo "Reusable on-push workflow call is disabled in the demo repository."

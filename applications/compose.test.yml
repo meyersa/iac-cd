@@ -1,6 +1,6 @@
 services:
   ivt-py-frontend:
-      image: ghcr.io/meyerstk/app-test-py:aa6f430cff56839e54ae53fdcad4f228fbcc5e42
+      image: ghcr.io/meyersa/app-test-py:latest
       container_name: ivt-py-frontend
       restart: unless-stopped
       mem_limit: 256m
