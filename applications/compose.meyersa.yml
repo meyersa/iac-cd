@@ -1,6 +1,6 @@
 services:
   meyersa-frontend:
-      image: ghcr.io/meyersa/new-web:latest
+      image: ghcr.io/meyersa/app-meyersa-v3:latest
       container_name: meyersa-frontend
       restart: unless-stopped
       mem_limit: 256m
