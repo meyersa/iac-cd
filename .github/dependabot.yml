@@ -15,6 +15,7 @@ updates:
       timezone: "America/Detroit"
     ignore:
       - dependency-name: "grafana/grafana"
+      - dependency-name: "mongo/mongo"
     open-pull-requests-limit: 5
   - package-ecosystem: github-actions
     directory: /
