@@ -61,7 +61,7 @@ services:
       alloy.port: "3100"
 
   mimir:
-    image: grafana/mimir:3.2.5
+    image: grafana/mimir:3.2.6
     container_name: mimir
     restart: unless-stopped
     networks:
